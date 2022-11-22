@@ -78,7 +78,7 @@
 4463241698;KenKen;Game Assassin;93.29;5;6;T
 2797548530;Mouse;Gameara;14.53;14;5;F
 7586140827;Battle Sheep;Game Sensor;266.57;14;9;2-5;Shakeel Mcintyre
-3690664040;Turtle;Game Sensor;223.01;13;8;F
+3690664040;Turtle;Game Sensor;223.01;12;8;F
 7001540358;Ghettopoly;Gamen;7.35;10;5;2-5;T-Jay Harper
 5882978986;Latin square;Game Rush;130.74;3;2;L
 9493833470;Ludo;Game Mafia;145.95;14;6;1-5;Osian Hendricks,Ayva Gibbs
@@ -95,7 +95,7 @@
 6401250594;Disentanglement puzzle;Game Throne;213.09;1;3;C
 2296386544;Chimpanzee;Gamefluent;12.89;12;10;F
 4205059343;Jigsaw puzzle;Gamegenix;67.37;8;8;T
-4599428616;Back from the klondike;Gamearo;29.29;7;3;M
+4599428616;Back from the klondike;Gamearo;29.29;6;3;M
 5466369452;Minus Cube;Game Sensor;98.61;13;6;T
 1579214984;Beethoven;Game Loop;15.36;12;6;A
 9336740135;Glückshaus;Game Orc;61.77;12;6;1-4;Diego Hills,Diego Hills
@@ -216,10 +216,9 @@
 8085889603;1313 Dead End Drive;Game Zombie;43.54;10;10;1-5;Marshall Swanson,Mylie Campbell
 3737738613;Deer;Game Pixel;182.28;5;8;F
 7596463022;Strange Synergy;Gamefluent;80.41;6;7;1-7;Milla Baxter,Harpreet Reilly
-3337731148;Rabbit;Gameado;63.90;12;7;F
+3337731148;Rabbit;Gameado;63.90;11;7;F
 1396272830;Power Rangers;Game Mach;277.40;12;5;A
 1778180329;George Washington;Gamegenix;192.31;12;8;H
 4662861666;Acrostic;Game Pixel;70.84;11;9;T
-1212121212;2;2;12.12;2;2;D
 1212122222;d;d;12.12;2;2;H
 9111111111;123;123;1323.00;1;1;1-3;mark

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import mru.tsc.controller.*;
+import mru.tsc.exceptions.IncompatiblePlayers;
 import mru.tsc.exceptions.NegativePrice;
 import mru.tsc.model.*;
 /**
@@ -18,11 +19,14 @@ public class ToyView {
 	/**
 	 * This method displays and controls the main menu, taking user input to perform other tasks
 	 * @param toyCatalogue the ArrayList of Toy objects.
+	 * @throws FileNotFoundException This is thrown if there is no file able to be written.
+	 * @throws IncompatiblePlayers Thrown if there is an Incompatible Players error in the Board Game objects
+	 * @throws NegativePrice Thrown if there is a Negative Price among the Toy objects
 	 */  
 	
 	
 	
-	public static void mainMenu(ArrayList<Toy> toyCatalogue) throws FileNotFoundException, NegativePrice{
+	public static void mainMenu(ArrayList<Toy> toyCatalogue) throws FileNotFoundException, NegativePrice, IncompatiblePlayers{
 		
 		System.out.println("********************************\nWelcome to Toy Store"
 				+ " Company!!\n********************************");
@@ -32,7 +36,8 @@ public class ToyView {
 					+ "\n	1. Search Inventory and Purchase Toy "
 					+ "\n	2. Add a New Toy"
 					+ "\n	3. Remove a Toy "
-					+ "\n	4. Save and Exit");		
+					+ "\n	4. Gift Suggestions."
+					+ "\n	5. Save & Exit.");		
 			System.out.println("Type your choice: ");
 			String input =keyboard.nextLine();
 			try {Integer.parseInt(input);
@@ -68,6 +73,11 @@ public class ToyView {
 				break;
 				
 			case 4:
+				
+				ToyApplication.giftSuggestion(toyCatalogue);
+				
+				
+			case 5:
 				PrintWriter toys = new PrintWriter("src/toys.txt");
 				for(Toy a:toyCatalogue) {
 					toys.println(a.saveToy());
@@ -81,6 +91,7 @@ public class ToyView {
 				System.exit(choice);
 				
 				break;
+				
 			
 				
 			default: 
@@ -104,7 +115,7 @@ public class ToyView {
 			
 	/**
 	 * This method displays a menu allowing the user to decide how they want to search through the list of toys
-	 * @param toyCatalogue
+	 * @param toyCatalogue the ArrayList of toys
 	 */  
 	
 		
@@ -116,7 +127,7 @@ public class ToyView {
 				+ "\n	1. Search by SN number."
 				+ "\n	2. Search by name."
 				+ "\n	3. Search by Type");
-		boolean toyFound=false;
+	
 		
 		System.out.print("\n	Type your choice: ");
 		
@@ -156,7 +167,7 @@ public class ToyView {
 	
 	/**
 	 * This method provides a menu for users to search through toys by type
-	 * @type this goes back to the controller, giving the users input to be directed.
+	 * @return type this goes back to the controller, giving the users input to be directed.
 	 */  
 	
 		

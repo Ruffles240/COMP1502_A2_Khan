@@ -1,9 +1,9 @@
 package mru.tsc.controller;
 import mru.tsc.model.*;
 import mru.tsc.view.*;
-
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 import mru.tsc.exceptions.*;
 
@@ -24,13 +24,15 @@ public class ToyApplication {
 /**
  * This method creates initializes the controls, opens the Toy File, and passes the data onto the main menu.
  * 
- * 
+ * @throws IOException This occurs if there is an error opening the File
+ * @throws IncompatiblePlayers This Exception occurs if the maximum players for one of the Board Game objects exceeds the minimum
+ * @throws NegativePrice This occurs if one of the prices is negative.
  * 
  * 
  */
 
 
-	public static void main(String[] args) throws IOException, IncompatiblePlayers, NegativePrice{
+	public static void main(String[] args) throws IOException, NegativePrice, IncompatiblePlayers{
 		
 		
 	 File toys = new File("src/toys.txt");
@@ -66,7 +68,7 @@ public class ToyApplication {
 	 * 
 	 */
 
-	public static ArrayList<Toy> toySorter(Scanner toyList) throws IncompatiblePlayers, NegativePrice {
+	public static ArrayList<Toy> toySorter(Scanner toyList) throws NegativePrice, IncompatiblePlayers {
 		
 		ArrayList<Toy> toyCatalogue = new ArrayList<Toy>();
 		
@@ -99,24 +101,220 @@ public class ToyApplication {
 		return toyCatalogue;
 		
 	}
-
 	
 	
+	/**
+	 * 
+	 * @param toyCatalogue The Array List of toys.
+	 * @throws IncompatiblePlayers This occurs if 
+	 * @throws NegativePrice 
+	 * @throws FileNotFoundException 
+	 */
+	public static void giftSuggestion(ArrayList<Toy>toyCatalogue) throws FileNotFoundException, NegativePrice, IncompatiblePlayers {
+		
+		int childAge=0;
+		double minPrice=0;
+		double maxPrice=0;
+		String toyType="";
+		
+		ArrayList<Toy> giftSuggestions= toyCatalogue;
+		
+		boolean validAge=false;
+		boolean validRange=false;
+		boolean validType=false;
+		boolean validPurchase = false;
+		
+		System.out.println("How old is the child?");
+		String ageInput = keyboard.nextLine();
+		while(validAge==false) {
+		try {childAge=Integer.parseInt(ageInput);
+			validAge=true;
+			
+		}
+		
+		catch(Exception e) {
+			if(ageInput.length()==0) {
+				validAge=true;
+				
+			}
+			
+			else { 
+				System.out.println("Sorry, valid age only(Or leave blank)");
+				ageInput= keyboard.nextLine();
+			}
+		}
+		}
+		
+		System.out.println("What is your price minimum?");
+		String minInput = keyboard.nextLine();
+		System.out.println("What is your price maximum?");
+		String maxInput = keyboard.nextLine();
+		while(validRange==false) {
+			
+		if(minInput.length()>0&&maxInput.length()>0) {
+		try {minPrice=Double.parseDouble(minInput);
+			 maxPrice= Double.parseDouble(maxInput);
+			 if(minPrice<maxPrice) {
+				 validRange=true;
+				
+			 }
+			 else {
+				 System.out.println("Sorry, the minimum price must be greater than the maximum");
+				 System.out.println("What is your price minimum?");
+					minInput = keyboard.nextLine();
+					System.out.println("What is your price maximum?");
+					maxInput = keyboard.nextLine();
+			 }
+			
+		}
+		
+		catch(Exception e) {
+			System.out.println("Sorry, valid prices only");
+			 System.out.println("Sorry, the minimum price must be greater than the maximum");
+			 System.out.println("What is your price minimum?");
+				minInput = keyboard.nextLine();
+				System.out.println("What is your price maximum?");
+				maxInput = keyboard.nextLine();
+			
+		}
+		}
+		if(minInput.length()>0&&maxInput.length()==0) {
+			try {minPrice=Double.parseDouble(minInput);
+				validRange=true;
+			}
+			
+			
+			
+			catch(Exception e) {
+				System.out.println("Sorry, your minimum age is invalid");
+				 System.out.println("What is your price minimum?");
+					minInput = keyboard.nextLine();
+			}
+		}
+		
+		if(maxInput.length()>0&&minInput.length()==0) {
+			try {maxPrice=Double.parseDouble(maxInput);
+				validRange=true;
+			}
+			
+			
+			
+			catch(Exception e) {
+				System.out.println("Sorry, your maximum age is invalid");
+				 System.out.println("What is your price minimum?");
+					maxInput = keyboard.nextLine();
+			}
+		}
+		if(maxInput.length()==0&&minInput.length()==0) {
+		validRange=true;
+			
+		}}
+		
+		
+		while(validType==false) {
+		
+		System.out.println("What type of toy do you want?");
+		toyType=keyboard.nextLine().toUpperCase();
+		if(toyType.equals("FIGURE")==false&&toyType.equals("ANIMAL")==false&&toyType.equals("BOARD GAME")==false&&toyType.equals("PUZZLE")==false&&(toyType.length()!=0)) {
+			System.out.println("Sorry, not a valid type. Please leave blank if you cannot think of a type.");
 
+			
+		}
+		else {
+			validType=true;
+			
+		}
+		}
+		
+		Iterator<Toy> i= giftSuggestions.iterator();
+		
+		while(i.hasNext()) {
+			Toy a= i.next();
+			if(childAge>0) {
+				
+				if(a.getAge()>childAge) {
+					i.remove();
+					continue;
+				}	
+			}
+		
+			 if(minPrice!=0) {
+				if(a.getPrice()<minPrice) {
+					i.remove();	
+					continue;
+			}
+				
+			 }
+		
+		 if(maxPrice!=0) {
+				if(a.getPrice()>maxPrice) {
+					i.remove();
+					continue;
+				}
+							
+		}
+		 if(toyType.length()!=0) {
+				if((a.getCategory().contains(toyType))==false) {
+					i.remove();
+					continue;
+				}
+		}
+		 {
+			
+			continue;
+		}
+		
+	}
+		
+		System.out.println("Here are your gift suggestions");
+		for(int l=0;l<giftSuggestions.size();l++) {
+			System.out.println((l+1) +". "+ giftSuggestions.get(l));	
+		}
+		System.out.println((giftSuggestions.size()+1) +". Return to the Main Menu");
+		
+		String purchaseInput = keyboard.nextLine();
+	
+		while(validPurchase==false){
+			try { int purchaseChoice = Integer.parseInt(purchaseInput);
+				if(purchaseChoice==(giftSuggestions.size())+1) {
+					ToyView.mainMenu(toyCatalogue);
+					
+				}
+				Toy purchasedToy = giftSuggestions.get(purchaseChoice-1);
+					purchasedToy.setAvailable(Integer.toString(purchasedToy.getAvailable()-1));
+				validPurchase=true;
+				System.out.println("This toy Was purchased, thank you!");
+				System.out.println(purchasedToy);
+				System.out.println("Press enter to return to the main menu");
+				
+				
+				keyboard.nextLine();
+				ToyView.mainMenu(toyCatalogue);
+			}
+			catch(Exception e) {	
+				System.out.println("Sorry, not a valid choice");
+				purchaseInput=keyboard.nextLine();
+			}
+		
+		
+	
+		
+	}}
+	
+	
+	
+	
+	
 	/**
 	 * This method creates a new toy object with user input
 	 * 
 	 * @param toyCatalogue This is the ArrayList of Toy objects we have created
+	 * @throws FileNotFoundException 
 	 * 
 	 * 
 	 */
 
-
-
-
-
-
-	public static void addToy(ArrayList<Toy>toyCatalogue) throws FileNotFoundException, NegativePrice {
+	public static void addToy(ArrayList<Toy>toyCatalogue) throws NegativePrice, IncompatiblePlayers, FileNotFoundException {
 			String newToySN;
 			String newToyName;
 			String newToyBrand;
@@ -161,14 +359,9 @@ public class ToyApplication {
 				String enteredPrice=keyboard.nextLine();
 				newToyPrice=Double.parseDouble(enteredPrice);
 				checkPrice=true;
-				
 				}
-				
-			
-			
 			catch(Exception e){
 				System.out.println("Sorry, this is an invalid entry. Please enter the price like this: '00.00' ");
-				
 			}
 			}
 			System.out.println("Available: ");
@@ -270,7 +463,7 @@ public class ToyApplication {
 			
 			else if(toyNumber>=4&&toyNumber<=6) {
 			
-				System.out.println("Type M for Action, C for Doll, L for, T for, or R for: ");
+				System.out.println("Type M for Mechanical, C for Cryptic, L for Logic, T for Trivia, or R for: Riddle");
 				String newToyType = keyboard.nextLine();
 				char puzzleType = newToyType.toUpperCase().charAt(0);
 				while(newToyType.length()!=1||(puzzleType!='M'&&puzzleType!='C'&&puzzleType!='L'&&puzzleType!='T'&&puzzleType!='R')) {
@@ -338,7 +531,7 @@ public class ToyApplication {
 					
 					catch(IncompatiblePlayers e){
 						
-						System.out.println(e.getMessage()+"/nPlease press enter to return to the main menu");
+						System.out.println(e.getMessage()+"\nPlease press enter to return to the main menu");
 						keyboard.nextLine();
 						ToyView.mainMenu(toyCatalogue);
 						
@@ -362,22 +555,22 @@ public class ToyApplication {
 	 * This method removes a toy
 	 * 
 	 * @param toyCatalogue This is the ArrayList of Toy objects we have created
-	 * 
+	 * @throws IOException This occurs if there is an error opening the File
+	 * @throws IncompatiblePlayers This Exception occurs if the maximum players for one of the Board Game objects exceeds the minimum
+	 * @throws NegativePrice This occurs if one of the prices is negative.
 	 * 
 	 */
 
 
-	public static void removeToy(ArrayList<Toy> toyCatalogue) throws FileNotFoundException, NegativePrice {
+	public static void removeToy(ArrayList<Toy> toyCatalogue) throws NegativePrice, IncompatiblePlayers, FileNotFoundException {
 	
-		boolean productFound=false;
-		
 		System.out.println("Please type in the SN of the product you wish to remove: ");
 		
 		String removeProductSN=SNChecker();
 		
 		while(removeProductSN==null) {
 			
-			System.out.println("Sorry, valid SN's only");
+			
 			removeProductSN=SNChecker();
 		}
 		
@@ -388,7 +581,6 @@ public class ToyApplication {
 						+ a.toString()+"\n Press Enter to go back to the main menu");
 				
 				toyCatalogue.remove(a);
-				productFound=true;
 				keyboard.nextLine();
 				ToyView.mainMenu(toyCatalogue);
 				break;
@@ -399,12 +591,13 @@ public class ToyApplication {
 			}
 		}
 		
-		if(productFound=false) {
-			System.out.println("Sorry, we could not locate the product to remove. Taking you back to the Main Menu");
-			
+		
+		
+			System.out.println("Sorry, we could not locate the product to remove. Press enter to return to the Main Menu");
+			keyboard.nextLine();
 			ToyView.mainMenu(toyCatalogue);
 			
-		}
+		
 		
 		
 	}
@@ -413,13 +606,14 @@ public class ToyApplication {
 	 * This method searches and purchases toys by SN number
 	 * 
 	 * @param toyCatalogue This is the ArrayList of Toy objects we have created
-	 * 
-	 * 
+	 * @throws IOException This occurs if there is an error opening the File
+	 * @throws IncompatiblePlayers This Exception occurs if the maximum players for one of the Board Game objects exceeds the minimum
+	 * @throws NegativePrice This occurs if one of the prices is negative.
 	 */
 
 
 
-	public static void searchToySN(ArrayList<Toy> toyCatalogue) throws FileNotFoundException, NegativePrice{
+	public static void searchToySN(ArrayList<Toy> toyCatalogue) throws NegativePrice, FileNotFoundException, IncompatiblePlayers{
 			
 			boolean toyFound=false;
 				
@@ -455,7 +649,11 @@ public class ToyApplication {
 				
 				if(purchaseDecision.charAt(0)=='Y') {
 				a.setAvailable(Integer.toString(a.getAvailable()-1));
-				System.out.println("Purchased! Thank you for your contribution.");
+				System.out.println("This toy Was purchased, thank you!");
+				System.out.println(a);
+				System.out.println("Press enter to return to the main menu");
+				
+				
 				toyFound=true;
 				
 				keyboard.nextLine();
@@ -493,13 +691,13 @@ public class ToyApplication {
 	 * This method sorts and displays toys by name, then provides the option to purchase
 	 * 
 	 * @param toyCatalogue This is the ArrayList of Toy objects we have created
-	 * 
+	 * @throws IOException This occurs if there is an error opening the File
+	 * @throws IncompatiblePlayers This Exception occurs if the maximum players for one of the Board Game objects exceeds the minimum
+	 * @throws NegativePrice This occurs if one of the prices is negative.
 	 * 
 	 */
 
-
-		
-		public static void searchToyName(ArrayList<Toy> toyCatalogue) throws FileNotFoundException, NegativePrice {
+		public static void searchToyName(ArrayList<Toy> toyCatalogue) throws NegativePrice, FileNotFoundException, IncompatiblePlayers {
 			System.out.println("Please input the name of the toy you are looking for: ");
 			String input=keyboard.nextLine().toLowerCase();
 			int listSize=0;
@@ -551,8 +749,10 @@ public class ToyApplication {
 							
 							validPurchase=true;
 							
-							System.out.println("Purchased!! Thank you!\n"
-									+ "Press enter to return to the main menu");
+							System.out.println("This toy Was purchased, thank you!");
+							System.out.println(purchasedToy);
+							System.out.println("Press enter to return to the main menu");
+							
 							
 							
 							keyboard.nextLine();
@@ -586,30 +786,29 @@ public class ToyApplication {
 		public static void searchType(ArrayList<Toy> toyCatalogue) {
 			ArrayList<Toy> matchingType= new ArrayList<Toy>();
 			
-			int listSize=0;
 			
 			int type= ToyView.typeSearchMenu();
 								if(type==1) {
 										for(Toy a:toyCatalogue) {	
-										if(a.getCategory().contains("Figure")) {
+										if(a.getCategory().contains("FIGURE")) {
 										matchingType.add(a);}
 									}
 								}
 								else if(type==2) {
 										for(Toy a:toyCatalogue) {	
-										if(a.getCategory().contains("Animal")) {
+										if(a.getCategory().contains("ANIMAL")) {
 										matchingType.add(a);}
 									}		
 								}					
 								else if(type==3) {
 										for(Toy a:toyCatalogue) {
-										if(a.getCategory().contains("Board Game")) {
+										if(a.getCategory().contains("BOARD GAME")) {
 										matchingType.add(a);}
 									}	
 								}
 								else if(type==4) {
 										for(Toy a:toyCatalogue) {
-										if(a.getCategory().contains("Puzzle")) {			
+										if(a.getCategory().contains("PUZZLE")) {			
 										matchingType.add(a);
 										}
 								}
@@ -618,23 +817,23 @@ public class ToyApplication {
 								
 								for(int i=0;i<matchingType.size();i++){
 								System.out.println("(" +(i+1)+")"+matchingType.get(i).toString());
-								listSize=i+2;
 								}
-								System.out.println("("+listSize+")		Return to the main menu");
+								System.out.println("("+(matchingType.size()+1)+")		Return to the main menu");
 							
 								String purchaseInput = keyboard.nextLine();
 								boolean validPurchase = false;
 								while(validPurchase==false){
 									try { int purchaseChoice = Integer.parseInt(purchaseInput);
-										if(purchaseChoice==listSize) {
+										if(purchaseChoice==(matchingType.size()+1)) {
 											ToyView.mainMenu(toyCatalogue);
 											
 										}
 										Toy purchasedToy = matchingType.get(purchaseChoice-1);
 											purchasedToy.setAvailable(Integer.toString(purchasedToy.getAvailable()-1));
 										validPurchase=true;
-										System.out.println("Purchased!! Thank you!\n"
-												+ "Press enter to return to the main menu");
+										System.out.println("This toy Was purchased, thank you!");
+										System.out.println(purchasedToy);
+										System.out.println("Press enter to return to the main menu");
 										
 										
 										keyboard.nextLine();
@@ -662,7 +861,6 @@ public class ToyApplication {
 		public static String SNChecker() {
 				System.out.println("Please input a SN: ");
 		
-				Scanner keyboard=new Scanner(System.in);
 					String SN= keyboard.nextLine();
 		
 						if(SN.length()==10) {

@@ -22,7 +22,8 @@ public abstract class Toy {
 	
 	/**
 	 * This is the constructor of toys
-	 * @toy this is the string of info meant to be parsed by the toy constructor.
+	 * @param toy this is the string of info meant to be parsed by the toy constructor.
+	 * @throws NegativePrice This occurs if the price of the object is negative.
 	 */
 	
 	public Toy(String toy) throws NegativePrice {

@@ -7,7 +7,7 @@ import mru.tsc.exceptions.*;
  */
 public class BoardGame extends Toy {
 	
-	final private String CATEGORY= "Board Game";
+	final private String CATEGORY= "BOARD GAME";
 	
 	private int minNum;
 	private int maxNum;
@@ -19,7 +19,8 @@ public class BoardGame extends Toy {
 	 * This is the constructor for Board Game objects.
 	 * It also contains a custom exception meant to make it incapable of producing objects where the minimum  players is greater than maximum.
 	 * @param toy this string is meant to be parsed into the various fields of info
-	 * 
+	 * @throws NegativePrice This occurs if the price of the object is negative.
+	 * @throws IncompatiblePlayers This occurs if the minimum players is greater than the maximum
 	 */
 	
 	public BoardGame(String toy) throws IncompatiblePlayers, NegativePrice {
@@ -27,15 +28,11 @@ public class BoardGame extends Toy {
 		parsePlayers(this.getElements()[6]);
 		setDesigner(this.getElements()[7]);
 		setAgeRange(minNum,maxNum);
-		
-		
-				IncompatiblePlayers c = new IncompatiblePlayers("Error, minimum cannot be greater than maximum");
-				if(minNum>maxNum) {
-					throw c;}
+	
+		IncompatiblePlayers c = new IncompatiblePlayers("Error, minimum cannot be greater than maximum");
+		if(minNum>maxNum) {
+				throw c;}
 					
-				
-			
-		
 	
 	}
 	
@@ -120,7 +117,7 @@ public class BoardGame extends Toy {
 
 	public String toString(){
 		String toyDescription= String.format(""
-				+ "***********************************************************\n"+"Category: " +CATEGORY+"SN: "+ this.getSN()+" Name: " + this.getName()+" Brand: " +this.getBrandName()+
+				+ "***********************************************************\n"+"Category: " +CATEGORY+" SN: "+ this.getSN()+" Name: " + this.getName()+" Brand: " +this.getBrandName()+
 				" Price: %.2f"
 				+ " Available: " +this.getAvailable()+ " Age: " +this.getAge()+" Age Range: "+ageRange+" designer: " +designer+"\n************************************************************************", this.getPrice());
 		

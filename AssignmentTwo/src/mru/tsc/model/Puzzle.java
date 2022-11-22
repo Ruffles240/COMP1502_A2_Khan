@@ -4,13 +4,14 @@ import mru.tsc.exceptions.NegativePrice;
 
 public class Puzzle extends Toy {
 
-	final private String CATEGORY = "Puzzle";
+	final private String CATEGORY = "PUZZLE";
 	private char puzzleType;
 	
 	
 	/**
 	 * This is the constructor for Puzzle objects(Extending Toy)
 	 * @param toy
+	 * @throws NegativePrice This occurs if the price of the object is negative.
 	 */
 	
 	

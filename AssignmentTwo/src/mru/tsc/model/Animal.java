@@ -21,7 +21,7 @@ public class Animal extends Toy {
 	 */
 
 
-	final private String CATEGORY= "Animal";
+	final private String CATEGORY= "ANIMAL";
 	/**
 	 * This field defines the size of the animal
 	 * 
@@ -32,6 +32,8 @@ public class Animal extends Toy {
 	private char size;
 	/**
 	 * This is the constructor
+	 * 
+	 * @throws NegativePrice This occurs if the price of the object is negative.
 	 * @return toy This is the string of info for the toy/animal object
 	 */
 

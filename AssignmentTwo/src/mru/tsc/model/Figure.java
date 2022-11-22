@@ -8,7 +8,7 @@ import mru.tsc.exceptions.NegativePrice;
 
 public class Figure extends Toy {
 
-	final private String CATEGORY= "Figure";
+	final private String CATEGORY= "FIGURE";
 	 private char classification;
 	 
 	 
@@ -16,6 +16,7 @@ public class Figure extends Toy {
 	 /**
 		 * This is the constructor
 		 * @param toy the string to be parsed into the object
+		 * @throws NegativePrice This occurs if the price of the object is negative.
 		 */
 
 
